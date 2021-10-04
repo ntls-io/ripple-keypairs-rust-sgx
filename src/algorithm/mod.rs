@@ -1,3 +1,5 @@
+use std::prelude::v1::*;
+
 use std::fmt;
 
 use crate::{error::Result, EntropyArray, HexBytes, KeyPairResult};

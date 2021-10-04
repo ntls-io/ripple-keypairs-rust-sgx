@@ -1,3 +1,5 @@
+use std::prelude::v1::*;
+
 use ring::digest::{digest, SHA256, SHA512};
 
 use ripemd160::{Digest, Ripemd160};

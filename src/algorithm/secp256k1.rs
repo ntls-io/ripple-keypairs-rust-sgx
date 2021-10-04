@@ -1,10 +1,12 @@
+use std::prelude::v1::*;
+
 use std::convert::TryInto;
 
 use ring::digest;
 
 use num_bigint::{BigInt, Sign as BigIntSign};
 
-use libsecp256k1::{
+use secp256k1::{
     sign, verify, Message, PublicKey as SecPublicKey, SecretKey as SecPrivateKey,
     Signature as SecSignature,
 };

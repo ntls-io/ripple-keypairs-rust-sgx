@@ -1,0 +1,4 @@
+# https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file
+[toolchain]
+# Follow upstream: https://github.com/apache/incubator-teaclave-sgx-sdk/blob/master/rust-toolchain
+channel = "nightly-2021-11-01"
