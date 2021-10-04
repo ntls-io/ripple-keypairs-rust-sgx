@@ -1,3 +1,5 @@
+use std::prelude::v1::*;
+
 use std::{fmt, str::FromStr};
 
 use hex::{decode, encode_upper};

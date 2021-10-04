@@ -66,6 +66,12 @@
 )]
 #![doc(test(attr(deny(warnings))))]
 #![doc(html_root_url = "https://docs.rs/ripple-keypairs/0.1.0")]
+#![no_std]
+
+#[macro_use]
+extern crate sgx_tstd as std;
+
+use std::prelude::v1::*;
 
 use std::{convert::TryInto, fmt, str::FromStr};
 

@@ -10,11 +10,37 @@ keywords = ["ripple", "keypair", "xrp", "cryptocurrencies", "encoding"]
 categories = ["cryptography::cryptocurrencies", "encoding"]
 edition = "2018"
 
+
+# SGX: libsecp256k1 requires feature resolver 2 to avoid unifying with std from its build dependencies.
+# Docs: https://doc.rust-lang.org/cargo/reference/resolver.html#feature-resolver-version-2
+resolver = "2"
+
+# SGX: No test harness.
+autotests = false
+
+
+[lib]
+test = false
+doctest = false
+bench = false
+
 [dependencies]
-ripple-address-codec = "0.1.1"
-ring = "0.16.19"
-base-x = "0.2.8"
-hex = "0.4.2"
-num-bigint = "0.4"
-libsecp256k1 = "0.7.0"
-ripemd160 = "0.9.1"
+ripple-address-codec = { git = "https://github.com/registreerocks/ripple-address-codec-rust-sgx", branch = "v0.1.1-sgx" }
+ring = { version = "0.16.19", git = "https://github.com/mesalock-linux/ring-sgx" }
+base-x = { version = "0.2.8", default-features = false }
+hex = { version = "0.4.2", default-features = false, features = ["alloc"] }
+num-bigint = { git = "https://github.com/mesalock-linux/num-bigint-sgx" }
+# SGX: FIXME: This pulls in the non-SGX-fork version of serde.
+#             We should patch libsecp256k1 to make serde optional, for when it's not used,
+#             and/or point this to https://github.com/mesalock-linux/libsecp256k1-rs-sgx
+#             once that's updated from 0.3.5 to 0.7.0.
+libsecp256k1 = { version = "0.7.0", default-features = false, features = ["hmac", "static-context"] }
+ripemd160 = { version = "0.9.1", default-features = false }
+
+sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+
+
+[patch.'https://github.com/apache/teaclave-sgx-sdk.git']
+sgx_libc = { git = "https://github.com/apache/incubator-teaclave-sgx-sdk" }
+sgx_trts = { git = "https://github.com/apache/incubator-teaclave-sgx-sdk" }
+sgx_tstd = { git = "https://github.com/apache/incubator-teaclave-sgx-sdk" }
