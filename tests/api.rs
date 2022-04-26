@@ -53,54 +53,56 @@ mod fixtures {
     }
 }
 
-mod secp256k1 {
+pub(crate) mod secp256k1 {
+    use std::prelude::v1::*;
+
     use super::*;
 
-    #[test]
-    fn new_seed() {
+    // #[test]
+    pub(crate) fn new_seed() {
         let seed = Seed::new(Array(TEST_SECP256K1.entropy), &Secp256k1);
 
         assert_eq!(TEST_SECP256K1.seed, seed.to_string());
     }
 
-    #[test]
-    fn random_seed_starts_with_s() {
+    // #[test]
+    pub(crate) fn random_seed_starts_with_s() {
         let seed = Seed::random();
 
         assert!(seed.to_string().starts_with("s") && !seed.to_string().starts_with("sEd"));
     }
 
-    #[test]
-    fn random_seed() {
+    // #[test]
+    pub(crate) fn random_seed() {
         assert_ne!(Seed::random().to_string(), Seed::random().to_string());
     }
 
-    #[test]
-    fn parse_random_seed() {
+    // #[test]
+    pub(crate) fn parse_random_seed() {
         let random_seed = Seed::random();
         let parsed_seed: Seed = random_seed.to_string().parse().unwrap();
 
         assert_eq!(parsed_seed, random_seed);
     }
 
-    #[test]
-    fn parse_seed() {
+    // #[test]
+    pub(crate) fn parse_seed() {
         let seed: Seed = TEST_SECP256K1.seed.parse().unwrap();
 
         assert_eq!(seed.as_kind(), &Secp256k1);
         assert_eq!(seed.as_entropy(), &TEST_SECP256K1.entropy);
     }
 
-    #[test]
-    fn bad_seed() {
+    // #[test]
+    pub(crate) fn bad_seed() {
         assert_eq!(
             "sXXXghtJtpUorTwvof1NpDXAzNwf5".parse::<Seed>().unwrap_err(),
             DecodeError
         );
     }
 
-    #[test]
-    fn derive_keypair() {
+    // #[test]
+    pub(crate) fn derive_keypair() {
         let seed = secp256k1_test_seed();
         let (private, public) = seed.derive_keypair().unwrap();
 
@@ -110,8 +112,8 @@ mod secp256k1 {
         );
     }
 
-    #[test]
-    fn sign() {
+    // #[test]
+    pub(crate) fn sign() {
         let seed = secp256k1_test_seed();
         let (private, _) = seed.derive_keypair().unwrap();
 
@@ -121,8 +123,8 @@ mod secp256k1 {
         )
     }
 
-    #[test]
-    fn verify() {
+    // #[test]
+    pub(crate) fn verify() {
         let seed = secp256k1_test_seed();
         let (_, public) = seed.derive_keypair().unwrap();
 
@@ -131,8 +133,8 @@ mod secp256k1 {
         assert_eq!(public.verify(&TEST_SECP256K1.message, &sig), Ok(()));
     }
 
-    #[test]
-    fn verify_bad_signature() {
+    // #[test]
+    pub(crate) fn verify_bad_signature() {
         let seed = secp256k1_test_seed();
         let (_, public) = seed.derive_keypair().unwrap();
 
@@ -142,15 +144,15 @@ mod secp256k1 {
         );
     }
 
-    #[test]
-    fn derive_address() {
+    // #[test]
+    pub(crate) fn derive_address() {
         let (_, public) = secp256k1_test_seed().derive_keypair().unwrap();
 
         assert_eq!(public.derive_address(), TEST_SECP256K1.address);
     }
 
-    #[test]
-    fn random_address() {
+    // #[test]
+    pub(crate) fn random_address() {
         let random_seed = Seed::new(Random, &Secp256k1);
         let (_, public) = random_seed.derive_keypair().unwrap();
         let address = public.derive_address();
@@ -159,33 +161,35 @@ mod secp256k1 {
     }
 }
 
-mod ed25519 {
+pub(crate) mod ed25519 {
+    use std::prelude::v1::*;
+
     use super::*;
 
-    #[test]
-    fn new_seed() {
+    // #[test]
+    pub(crate) fn new_seed() {
         let seed = Seed::new(Array(TEST_ED25519.entropy), &Ed25519);
 
         assert_eq!(TEST_ED25519.seed, seed.to_string());
     }
 
-    #[test]
-    fn random_seed_starts_with_sed() {
+    // #[test]
+    pub(crate) fn random_seed_starts_with_sed() {
         let seed = Seed::new(Random, &Ed25519);
 
         assert!(seed.to_string().starts_with("sEd"));
     }
 
-    #[test]
-    fn random_seed() {
+    // #[test]
+    pub(crate) fn random_seed() {
         assert_ne!(
             Seed::new(Random, &Ed25519).to_string(),
             Seed::new(Random, &Ed25519).to_string()
         );
     }
 
-    #[test]
-    fn parse_random_seed() {
+    // #[test]
+    pub(crate) fn parse_random_seed() {
         let random_seed = Seed::new(Random, &Ed25519);
         let parsed_seed: Seed = random_seed.to_string().parse().unwrap();
 
@@ -193,16 +197,16 @@ mod ed25519 {
         assert_eq!(parsed_seed.as_entropy(), random_seed.as_entropy());
     }
 
-    #[test]
-    fn parse_seed() {
+    // #[test]
+    pub(crate) fn parse_seed() {
         let seed: Seed = TEST_ED25519.seed.parse().unwrap();
 
         assert_eq!(seed.as_kind(), &Ed25519);
         assert_eq!(seed.as_entropy(), &TEST_ED25519.entropy);
     }
 
-    #[test]
-    fn bad_seed() {
+    // #[test]
+    pub(crate) fn bad_seed() {
         assert_eq!(
             "sEdXXXCy2JT7JaM7v95H9SxkhP9wS2r"
                 .parse::<Seed>()
@@ -211,8 +215,8 @@ mod ed25519 {
         );
     }
 
-    #[test]
-    fn derive_keypair() {
+    // #[test]
+    pub(crate) fn derive_keypair() {
         let seed = ed25519_test_seed();
         let (private, public) = seed.derive_keypair().unwrap();
 
@@ -222,8 +226,8 @@ mod ed25519 {
         );
     }
 
-    #[test]
-    fn sign() {
+    // #[test]
+    pub(crate) fn sign() {
         let seed = ed25519_test_seed();
         let (private, _) = seed.derive_keypair().unwrap();
 
@@ -233,8 +237,8 @@ mod ed25519 {
         )
     }
 
-    #[test]
-    fn verify() {
+    // #[test]
+    pub(crate) fn verify() {
         let seed = ed25519_test_seed();
         let (_, public) = seed.derive_keypair().unwrap();
 
@@ -243,8 +247,8 @@ mod ed25519 {
         assert_eq!(public.verify(&TEST_ED25519.message, &sig), Ok(()));
     }
 
-    #[test]
-    fn verify_bad_signature() {
+    // #[test]
+    pub(crate) fn verify_bad_signature() {
         let seed = ed25519_test_seed();
         let (_, public) = seed.derive_keypair().unwrap();
 
@@ -254,15 +258,15 @@ mod ed25519 {
         );
     }
 
-    #[test]
-    fn derive_address() {
+    // #[test]
+    pub(crate) fn derive_address() {
         let (_, public) = ed25519_test_seed().derive_keypair().unwrap();
 
         assert_eq!(public.derive_address(), TEST_ED25519.address);
     }
 
-    #[test]
-    fn random_address() {
+    // #[test]
+    pub(crate) fn random_address() {
         let random_seed = Seed::new(Random, &Ed25519);
         let (_, public) = random_seed.derive_keypair().unwrap();
         let address = public.derive_address();

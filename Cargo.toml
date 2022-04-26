@@ -10,11 +10,31 @@ keywords = ["ripple", "keypair", "xrp", "cryptocurrencies", "encoding"]
 categories = ["cryptography::cryptocurrencies", "encoding"]
 edition = "2018"
 
+
+# SGX: No test harness.
+autotests = false
+
+
+[lib]
+test = false
+doctest = false
+bench = false
+
 [dependencies]
-ripple-address-codec = "0.1.1"
-ring = "0.16.19"
-base-x = "0.2.8"
-hex = "0.4.2"
-num-bigint = "0.4"
-libsecp256k1 = "0.7.0"
-ripemd160 = "0.9.1"
+ripple-address-codec = { version = "0.1.1", git = "https://github.com/ntls-io/ripple-address-codec-rust-sgx", branch = "v0.1.1-sgx" }
+ring = { version = "0.16.19", git = "https://github.com/mesalock-linux/ring-sgx" }
+base-x = { version = "0.2.8", default-features = false }
+hex = { version = "0.4.2", default-features = false, features = ["alloc"] }
+num-bigint = { version = "0.2.5", git = "https://github.com/mesalock-linux/num-bigint-sgx" }
+# TODO(Pi, 2021-10-05): Update libsecp256k1-rs-sgx fork to 0.7.0
+# XXX(Pi): Use ntls-io fork for patched rand-sgx dependency specifier.
+libsecp256k1 = { version = "0.3.5", git = "https://github.com/ntls-io/libsecp256k1-rs-sgx" }
+ripemd160 = { version = "0.9.1", default-features = false }
+
+sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+
+
+[patch.'https://github.com/apache/teaclave-sgx-sdk.git']
+sgx_libc = { git = "https://github.com/apache/incubator-teaclave-sgx-sdk" }
+sgx_trts = { git = "https://github.com/apache/incubator-teaclave-sgx-sdk" }
+sgx_tstd = { git = "https://github.com/apache/incubator-teaclave-sgx-sdk" }

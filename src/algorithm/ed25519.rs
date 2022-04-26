@@ -1,3 +1,5 @@
+use std::prelude::v1::*;
+
 use ring::signature::{self, KeyPair};
 
 use ripple_address_codec as codec;
